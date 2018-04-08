@@ -41,11 +41,11 @@ def current_player():
     return '''
     <html>
     <head>
-    <meta HTTP-EQUIV="REFRESH" content="10; url=/sold_to">
+    <meta HTTP-EQUIV="REFRESH" content="2; url=/sold_to">
     </head>
     <body>
     Set player id to {}, {} from {}.
-    Click <a href="/sold_to"> here </a> if not redirectedself.
+    Click <a href="/sold_to">here</a> if not redirected.
     </body>
     </html>
     '''.format(current_player_id, 'player_name','team_name')
