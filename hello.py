@@ -21,7 +21,7 @@ def root():
 
     '''
 
-@app_route('/current_player_info')
+@app.route('/current_player_info')
 def current_player_info():
     return '''<html><head></head><body>
     {}
