@@ -17,7 +17,9 @@ def get_info_on(player_id):
 
 @app.route('/')
 def root():
-    return '''<html><head></head><body>
+    return '''<html><head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head><body>
     UUuugh. Web is hard.<br>
     Click for data entry mode: <a href="/set_player_form">here</a><br>
     Click for bidding mode: <a href="/current_player_info">here</a><br>
