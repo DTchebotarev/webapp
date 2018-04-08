@@ -10,7 +10,7 @@ current_player_id = 0
 player_df = pd.read_pickle('individual.pickle')
 
 def get_info_on(player_id):
-    return player_df.loc[player_id,['FirstName','LastName']]
+    return player_df.loc[player_id,['FirstName','LastName']].to_html()
 
 @app.route('/')
 def root():
