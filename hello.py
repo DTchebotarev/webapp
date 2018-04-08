@@ -11,7 +11,7 @@ player_df = pd.read_pickle('individual.pickle')
 
 def get_info_on(player_id):
     try:
-        return player_df.loc[player_id,['FirstName','LastName']].to_html()
+        return player_df.loc[player_id,['FirstName','LastName']].to_frame().to_html()
     except:
         return '''Player doesn't exist.'''
 
@@ -28,7 +28,9 @@ def root():
 
 @app.route('/current_player_info')
 def current_player_info():
-    return '''<html><head></head><body>
+    return '''<html><head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head><body>
     {}
     </body></html>
     '''.format(get_info_on(current_player_id))
@@ -46,7 +48,9 @@ def list_players():
 def player_form():
     return '''
     <html>
-        <head></head><body>
+        <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head><body>
      <form action="/set_player">
       Player id:<br>
       <input type="text" name="id"><br>
@@ -60,7 +64,9 @@ def player_form():
 def sold_to_form():
     return '''
     <html>
-        <head></head><body>
+        <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head><body>
      <form action="/sold_to">
       Player id:<br>
       <input type="text" name="buyer_team"><br>
@@ -79,6 +85,7 @@ def current_player():
     <html>
     <head>
     <meta HTTP-EQUIV="REFRESH" content="2; url=/sold_to_form">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
     Set player id to {}, {} from {}.<br>
