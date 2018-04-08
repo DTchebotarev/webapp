@@ -18,7 +18,7 @@ def add_player(player_id):
 def list_players():
     return "\n".join(player_list)
 
-@app.route('/set_player_form'
+@app.route('/set_player_form')
 def player_form():
     return '''
         <head></head><body>
