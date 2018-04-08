@@ -11,6 +11,7 @@ def hello_world():
 @app.route('/add_player/<player_id>')
 def add_player(player_id):
     player_list.add(player_id)
+    return "Ok"
 
 @app.route('/list_players')
 def list_players():
