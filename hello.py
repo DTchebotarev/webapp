@@ -7,7 +7,7 @@ bid_teams = {k:1000 for k in range(19)}
 
 current_player_id = 0
 
-player_df = pd.read_pickle('individual_pickle')
+player_df = pd.read_pickle('individual.pickle')
 
 def get_info_on(player_id):
     return player_df.loc[player_id,['FirstName','LastName']]
