@@ -12,5 +12,5 @@ def hello_world():
 def add_player(player_id):
     player_list.add(player_id)
 
-@app.route('list_ids'):
-    return "\n".join(player_id)
+@app.route('/list_players'):
+    return "\n".join(player_list)
