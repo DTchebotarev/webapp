@@ -35,17 +35,21 @@ def player_form():
     </html>
     '''
 
+@app.route('/sold_to_form')
+def sold_to():
+
+
 @app.route('/set_player')
 def current_player():
     current_player_id = int(request.args.get('id'))
     return '''
     <html>
     <head>
-    <meta HTTP-EQUIV="REFRESH" content="2; url=/sold_to">
+    <meta HTTP-EQUIV="REFRESH" content="2; url=/sold_to_form">
     </head>
     <body>
-    Set player id to {}, {} from {}.
-    Click <a href="/sold_to">here</a> if not redirected.
+    Set player id to {}, {} from {}.<br>
+    Click <a href="/sold_to_form">here</a> if not redirected.
     </body>
     </html>
     '''.format(current_player_id, 'player_name','team_name')
