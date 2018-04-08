@@ -1,8 +1,9 @@
-from flask import Flask
-import os
+from flask import Flask, request
 app = Flask(__name__)
 
 player_list = set()
+
+current_player_id = 0
 
 @app.route('/')
 def hello_world():
@@ -16,3 +17,19 @@ def add_player(player_id):
 @app.route('/list_players')
 def list_players():
     return "\n".join(player_list)
+
+@app.route('/set_player_form'
+def player_form():
+    return '''
+        <head></head><body>
+     <form action="/set_player">
+      Player id:<br>
+      <input type="text" name="id">
+    </form>
+    </body>
+    '''
+
+@app.route('/set_player')
+def current_player(player_id):
+    current_player_id = request.args.get('id')
+    return "Set player id to {}".format(request.args.get('id'))
