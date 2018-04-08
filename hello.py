@@ -30,6 +30,6 @@ def player_form():
     '''
 
 @app.route('/set_player')
-def current_player(player_id):
+def current_player():
     current_player_id = request.args.get('id')
     return "Set player id to {}".format(request.args.get('id'))
