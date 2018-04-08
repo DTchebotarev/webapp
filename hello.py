@@ -7,7 +7,10 @@ current_player_id = 0
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return '''
+    UUuugh. Web is hard.
+
+    '''
 
 @app.route('/add_player/<player_id>')
 def add_player(player_id):
@@ -21,6 +24,7 @@ def list_players():
 @app.route('/set_player_form')
 def player_form():
     return '''
+    <html>
         <head></head><body>
      <form action="/set_player">
       Player id:<br>
@@ -28,9 +32,20 @@ def player_form():
       <input type="submit" value="Submit">
     </form>
     </body>
+    </html>
     '''
 
 @app.route('/set_player')
 def current_player():
-    current_player_id = request.args.get('id')
-    return "Set player id to {}".format(request.args.get('id'))
+    current_player_id = int(request.args.get('id'))
+    return '''
+    <html>
+    <head>
+    <meta HTTP-EQUIV="REFRESH" content="10; url=/sold_to">
+    </head>
+    <body>
+    Set player id to {}, {} from {}.
+    Click <a href="/sold_to"> here </a> if not redirectedself.
+    </body>
+    </html>
+    '''.format(current_player_id, 'player_name','team_name')
