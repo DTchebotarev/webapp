@@ -24,7 +24,8 @@ def player_form():
         <head></head><body>
      <form action="/set_player">
       Player id:<br>
-      <input type="text" name="id">
+      <input type="text" name="id"><br>
+      <input type="submit" value="Submit">
     </form>
     </body>
     '''
