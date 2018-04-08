@@ -1,16 +1,32 @@
 from flask import Flask, request
+import pandas as pd
 app = Flask(__name__)
 
 player_list = set()
+bid_teams = {k:1000 for k in range(19)}
 
 current_player_id = 0
 
+player_df = pd.read_pickle('individual_pickle')
+
+def get_info_on(player_id):
+    return player_df.loc[player_id,['FirstName','LastName']]
+
 @app.route('/')
-def hello_world():
-    return '''
-    UUuugh. Web is hard.
+def root():
+    return '''<html><head></head><body>
+    UUuugh. Web is hard.<br>
+    Click for data entry mode: <a href="/set_player_form">here</a>
+    Click for bidding mode: <a href="/current_player_info">here</a>
 
     '''
+
+@app_route('/current_player_info')
+def current_player_info():
+    return '''<html><head></head><body>
+    {}
+    </body></html>
+    '''.format(get_info_on(current_player_id))
 
 @app.route('/add_player/<player_id>')
 def add_player(player_id):
@@ -36,7 +52,19 @@ def player_form():
     '''
 
 @app.route('/sold_to_form')
-def sold_to():
+def sold_to_form():
+    return '''
+    <html>
+        <head></head><body>
+     <form action="/sold_to">
+      Player id:<br>
+      <input type="text" name="buyer_team"><br>
+      <input type="submit" value="Submit">
+    </form>
+    </body>
+    </html>
+    '''
+
 
 
 @app.route('/set_player')
