@@ -13,4 +13,5 @@ def add_player(player_id):
     player_list.add(player_id)
 
 @app.route('/list_players')
+def list_players():
     return "\n".join(player_list)
