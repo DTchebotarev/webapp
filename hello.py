@@ -6,6 +6,9 @@ from functools import lru_cache
 app = Flask(__name__)
 
 
+player_df = pd.read_pickle('individual.pickle')
+player_list = list(player_df.index)
+
 bid_teams = {k:1000 for k in range(17)}
 our_id = 0
 roster = set()
@@ -83,8 +86,6 @@ def random_draw(return_all = False):
 
 current_player_id = 0
 
-player_df = pd.read_pickle('individual.pickle')
-player_list = list(player_df.index)
 common_head = '''<!doctype html><html lang-"en"><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
