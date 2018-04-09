@@ -222,7 +222,7 @@ def sold_to_form():
 @app.route('/sold_to')
 def sold_to():
     submitted_id = request.args.get('buyer_team')
-    price = regquest.args.get('sale_amount')
+    price = request.args.get('sale_amount')
     try:
         submitted_id = int(submitted_id)
         price = int(price)
