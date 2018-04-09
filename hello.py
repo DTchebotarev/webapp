@@ -128,7 +128,7 @@ def get_info_on(player_id):
             remaining_price = 'No money left'
         player_margin = get_player_margin(player_id)
         player_price = player_margin * remaining_price
-        txt = common_head + '''
+        txt = common_head.format('') + '''
         First Name: {} <br>
         Last Name: {} <br>
         Team: {} <br>
