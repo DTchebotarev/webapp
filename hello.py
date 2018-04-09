@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 player_list = [ 9627,  4683,  5418,  4766,  5599,  4686,  5006, 10057,  8916,
              5140,  5562,  5261,  4386,  4331,  4052]
-bid_teams = {k:1000 for k in range(19)}
+bid_teams = {k:1000 for k in range(20)}
 our_id = 0
 roster = set()
 elo_scores = pd.read_html('http://morehockeystats.com/teams/elo?inline=1&season=2017&page=1&hl=',index_col=0,header=0)[0]
