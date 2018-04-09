@@ -1,4 +1,5 @@
 flask
 lxml
+html5lib
 gunicorn
 pandas
