@@ -1,4 +1,5 @@
 from flask import Flask, request
+from multiprocessing import Pool
 from random import random
 import pandas as pd
 from functools import lru_cache
@@ -116,7 +117,8 @@ def get_info_on(player_id):
     if player_id == 0:
         return "not initialized"
     else:
-        remaining_margin_points = sum([get_player_margin(p,nsim=1000) for p in player_list])
+        with Pool(processes=3) as pool:
+            remaining_margin_points = sum(pool.map(get_player_margin, [p for p in player_list]))
         remaining_cash = sum([k for k in bid_teams.values()])
         try:
             remaining_price = remaining_cash/remaining_margin_points
