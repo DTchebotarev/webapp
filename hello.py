@@ -163,7 +163,7 @@ def root():
 
 @app.route('/teams')
 def teams():
-    return common_head + '<br>'.join(['Team {:02} ${}'.format(k,bid_items[k]) for k in bid_teams.keys()]) + common_tail
+    return common_head + '<br>'.join(['Team {:02} ${}'.format(k,bid_teams[k]) for k in bid_teams.keys()]) + common_tail
 
 @app.route('/current_player_info')
 def current_player_info():
