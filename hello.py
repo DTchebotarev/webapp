@@ -18,6 +18,7 @@ team_mapping = {'ANA':'Anaheim Ducks', 'ARI':'Arizona Coyotes', 'BOS':'Boston Br
 'STL':'St. Louis Blues','TBL':'Tampa Bay Lightning', 'TOR':'Toronto Maple Leafs', 'VAN':'Vancouver Canucks',
 'VGK':'Vegas Golden Knights', 'WSH':'Washington Capitals', 'WPG':'Winnipeg Jets'}
 reverse_team_mapping = {v: k for k, v in team_mapping.items()}
+elo_scores.loc[:,'ShortTeam'] = elo_scores.loc[:,'Team']
 elo_scores = elo_scores.replace({'ShortTeam':reverse_team_mapping})
 elo_scores.index = elo_scores.ShortTeam
 
