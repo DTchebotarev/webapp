@@ -238,7 +238,7 @@ def sold_to():
         '''.format(submitted_id,price)+common_tail
     global bid_teams
     bid_teams[submitted_id] = bid_teams[submitted_id] - price
-    global player_list
+#     global player_list
     player_list.remove(current_player_id)
     first = player_df.loc[current_player_id,'FirstName']
     last = player_df.loc[current_player_id,'LastName']
