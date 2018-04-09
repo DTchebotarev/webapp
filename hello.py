@@ -13,7 +13,7 @@ def get_info_on(player_id):
     try:
         return player_df.loc[player_id,['FirstName','LastName']].to_frame().to_html()
     except:
-        return '''Player doesn't exist.'''
+        return '''Player doesn't exist for player id {}'''.format(player_id)
 
 @app.route('/')
 def root():
