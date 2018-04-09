@@ -1,4 +1,5 @@
 flask
+beautiful_soup
 lxml
 html5lib
 gunicorn
