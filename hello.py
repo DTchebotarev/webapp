@@ -148,7 +148,7 @@ def get_info_on(player_id):
         player_price*.8,
         player_price*.7,
         player_price*.6,
-        player_price*.5) + common_tail
+        player_price*.5)
         return txt
 
 @app.route('/')
@@ -225,6 +225,8 @@ def sold_to():
         '''.format(submitted_id,price)+common_tail
     global bid_teams
     bid_teams[submitted_id] = bid_teams[submitted_id] - price
+    global players_list
+    players_list.remove(current_player_id)
     first = player_df.loc[current_player_id,'FirstName']
     last = player_df.loc[current_player_id,'LastName']
     return '''
