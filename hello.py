@@ -11,7 +11,7 @@ current_player_id = 0
 player_df = pd.read_pickle('individual.pickle')
 
 def get_info_on(player_id):
-    if player_id = 0:
+    if player_id == 0:
         return "not initialized"
     return player_df.loc[player_id,['FirstName','LastName']].to_frame().to_html()
 
