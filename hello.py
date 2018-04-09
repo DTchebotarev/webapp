@@ -121,7 +121,8 @@ def get_info_on(player_id):
             remaining_price = remaining_cash/remaining_margin_points
         except:
             remaining_price = 'No money left'
-        player_price = get_player_margin(player_id)
+        player_margin = get_player_margin(player_id)
+        player_price = player_margin * remaining_price
         txt = common_head + '''
         First Name: {} <br>
         Last Name: {} <br>
