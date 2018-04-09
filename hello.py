@@ -33,6 +33,7 @@ def pwin_wrapper(team_1,team_2):
     return prob_win(elo_scores.loc[team_1,'Elo'],elo_scores.loc[team_2,'Elo'])
 bracket = ['NSH','COL','WPG','MIN','VGK','LAK','ANA','SJS',
            'TBL','NJD','BOS','TOR','WSH','CBJ','PIT','PHI']
+
 def random_draw(return_all = False):
     # keep track of games played
     gp = {k:0 for k in bracket}
@@ -116,7 +117,7 @@ def get_info_on(player_id):
         remaining_margin_points = sum([get_player_margin(p) for p in player_list])
         remaining_cash = sum([k for k in bid_teams.values()])
         try:
-            remaining_price = remaining_margin_points/remaining_cash
+            remaining_price = remaining_cash/remaining_margin_points
         except:
             remaining_price = 'No money left'
         player_price = get_player_margin(player_id)
