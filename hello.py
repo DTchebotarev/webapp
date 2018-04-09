@@ -133,8 +133,8 @@ def current_player():
     else:
         global current_player_id
         current_player_id = submitted_id
-        first = player_df.loc[player_id,'FirstName']
-        last = player_df.loc[player_id,'LastName']
+        first = player_df.loc[current_player_id,'FirstName']
+        last = player_df.loc[current_player_id,'LastName']
         return '''
         <html>
         <head>
@@ -146,4 +146,4 @@ def current_player():
         Click <a href="/sold_to_form">here</a> if not redirected.
         </body>
         </html>
-        '''.format(current_player_id, first+' '+last, player_df.loc[player_id,'team'])
+        '''.format(current_player_id, first+' '+last, player_df.loc[current_player_id,'team'])
