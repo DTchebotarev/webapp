@@ -106,10 +106,10 @@ def roster_expected_goals(roster, nsim=1000):
     return sum([v for v in player_total.values()])/nsim
 
 def get_player_margin(player_id, nsim=1000):
-    value_without = roster_expected_goals(roster)
+    value_without = roster_expected_goals(roster,nsim=nsim)
     alternate_roster = roster.copy()
     alternate_roster.add(player_id)
-    value_with = roster_expected_goals(alternate_roster)
+    value_with = roster_expected_goals(alternate_roster,nsim=nsim)
     return value_with - value_without
 
 def get_info_on(player_id):
