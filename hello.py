@@ -172,7 +172,9 @@ def teams():
 
 @app.route('/roster')
 def show_roster():
-    return common_head + '<br>'.join(['{} {} {}'.format(player_df.loc[p,'FirstName'],player_df.loc[p,'LastName'],player_df.loc[p,'team']) for p in roster]) + common_tail
+    return common_head + '<br>'.join(['{} {} {}'.format(player_df.loc[p,'FirstName'],
+    player_df.loc[p,'LastName'],player_df.loc[p,'team']) for p in roster]) \
+    + '{} players left'.format(len(player_list)) + common_tail
 
 @app.route('/current_player_info')
 def current_player_info():
