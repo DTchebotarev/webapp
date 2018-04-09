@@ -83,7 +83,7 @@ def sold_to():
 
     if submitted_id == 'us':
         global our_cash
-        our_cash += -1*
+        our_cash += -1*0
     try:
         submitted_id = int(submitted_id)
     except:
