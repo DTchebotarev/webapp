@@ -5,10 +5,8 @@ import pandas as pd
 from functools import lru_cache
 app = Flask(__name__)
 
-player_list = [ 9627,  4683,  5418,  4766,  5599,  4686,  5006, 10057,  8916,
-             5140,  5562,  5261,  4386,  4331,  4052]+[5010, 5538, 5210, 5042,  850, 4501, 4671, 4869, 4676, 5012, 4231,
-             440, 5022, 5204, 5438]*15
-bid_teams = {k:1000 for k in range(20)}
+
+bid_teams = {k:1000 for k in range(17)}
 our_id = 0
 roster = set()
 elo_scores = pd.read_html('http://morehockeystats.com/teams/elo?inline=1&season=2017&page=1&hl=',index_col=0,header=0)[0]
@@ -86,7 +84,7 @@ def random_draw(return_all = False):
 current_player_id = 0
 
 player_df = pd.read_pickle('individual.pickle')
-
+player_list = list(player_df.index)
 common_head = '''<html><head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head><body>'''
@@ -224,6 +222,7 @@ def sold_to():
     try:
         submitted_id = int(submitted_id)
         price = int(price)
+        assert current_player_id in player_list
     except:
         return '''<html><head>
         <meta HTTP-EQUIV="REFRESH" content="2; url=/sold_to_form">
