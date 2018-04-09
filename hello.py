@@ -118,7 +118,7 @@ def get_info_on(player_id):
         return "not initialized"
     else:
         with Pool(processes=3) as pool:
-            remaining_margin_points = sum(pool.starmap(get_player_margin, [p,1000 for p in player_list]))
+            remaining_margin_points = sum(pool.starmap(get_player_margin, [(p,1000) for p in player_list]))
         remaining_cash = sum([k for k in bid_teams.values()])
         try:
             remaining_price = remaining_cash/remaining_margin_points
