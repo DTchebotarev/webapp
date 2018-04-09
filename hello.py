@@ -116,7 +116,7 @@ def get_info_on(player_id):
     if player_id == 0:
         return "not initialized"
     else:
-        remaining_margin_points = sum([get_player_margin(p,nsim=500) for p in player_list])
+        remaining_margin_points = sum([get_player_margin(p,nsim=1000) for p in player_list])
         remaining_cash = sum([k for k in bid_teams.values()])
         try:
             remaining_price = remaining_cash/remaining_margin_points
