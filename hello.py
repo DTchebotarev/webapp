@@ -157,8 +157,13 @@ def root():
     UUuugh. Web is hard.<br>
     Click for data entry mode: <a href="/set_player_form">here</a><br>
     Click for bidding mode: <a href="/current_player_info">here</a><br>
+    Click for team overview: <a href="/teams">here</a><br>
     </body></html>
     '''
+
+@app.route('/teams')
+def teams():
+    return common_head + '<br>'.join(['Team {:02} ${}'.format(k,bid_items[k]) for k in bid_teams.keys()]) + common_tail
 
 @app.route('/current_player_info')
 def current_player_info():
