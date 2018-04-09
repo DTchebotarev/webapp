@@ -80,7 +80,8 @@ def sold_to_form():
 
 @app.route('/set_player')
 def current_player():
-    global current_player_id = int(request.args.get('id'))
+    global current_player_id
+    current_player_id = int(request.args.get('id'))
     return '''
     <html>
     <head>
