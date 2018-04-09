@@ -221,6 +221,7 @@ def sold_to_form():
 def sold_to():
     submitted_id = request.args.get('buyer_team')
     price = request.args.get('sale_amount')
+    global player_list
     try:
         submitted_id = int(submitted_id)
         price = int(price)
