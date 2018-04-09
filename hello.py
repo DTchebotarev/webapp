@@ -161,7 +161,8 @@ def root():
     UUuugh. Web is hard.<br>
     Click for data entry mode: <a href="/set_player_form">here</a><br>
     Click for bidding mode: <a href="/current_player_info">here</a><br>
-    Click for team overview: <a href="/teams">here</a><br>
+    Click for bidders overview: <a href="/teams">here</a><br>
+    Click here for roster: <a href="/roster">here</a><br>
     </body></html>
     '''
 
@@ -171,7 +172,7 @@ def teams():
 
 @app.route('/roster')
 def show_roster():
-    return common_head + '<br>'.join(['{} {} {}'.format(player_df.loc[p,'FirstName'],player_df.loc[p,'LastName'],player_df.loc[p,'team'] for p in roster) + common_tail
+    return common_head + '<br>'.join(['{} {} {}'.format(player_df.loc[p,'FirstName'],player_df.loc[p,'LastName'],player_df.loc[p,'team']) for p in roster]) + common_tail
 
 @app.route('/current_player_info')
 def current_player_info():
