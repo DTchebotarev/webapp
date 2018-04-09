@@ -125,15 +125,15 @@ def get_info_on(player_id):
         First Name: {} <br>
         Last Name: {} <br>
         Team: {} <br>
-        Expected PPG: {} <br>
-        Expected marginal points: {} <br>
-        Value per point: {} <br>
-        Player value at 100%: {} <br>
-        Player value at 90%: {} <br>
-        Player value at 80%: {} <br>
-        Player value at 70%: {} <br>
-        Player value at 60%: {} <br>
-        Player value at 50%: {} <br>
+        Expected PPG: {0:.2f} <br>
+        Expected marginal points: {0:.2f} <br>
+        Value per point: {0:.2f} <br>
+        Player value at 100%: {0:.2f} <br>
+        Player value at 90%: {0:.2f} <br>
+        Player value at 80%: {0:.2f} <br>
+        Player value at 70%: {0:.2f} <br>
+        Player value at 60%: {0:.2f} <br>
+        Player value at 50%: {0:.2f} <br>
         '''.format(player_df.loc[player_id,'FirstName'],
         player_df.loc[player_id,'LastName'],
         player_df.loc[player_id,'team'],
