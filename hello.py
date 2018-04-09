@@ -5,7 +5,8 @@ from functools import lru_cache
 app = Flask(__name__)
 
 player_list = [ 9627,  4683,  5418,  4766,  5599,  4686,  5006, 10057,  8916,
-             5140,  5562,  5261,  4386,  4331,  4052]
+             5140,  5562,  5261,  4386,  4331,  4052]+[5010, 5538, 5210, 5042,  850, 4501, 4671, 4869, 4676, 5012, 4231,
+             440, 5022, 5204, 5438]
 bid_teams = {k:1000 for k in range(20)}
 our_id = 0
 roster = set()
@@ -88,7 +89,7 @@ player_df = pd.read_pickle('individual.pickle')
 common_head = '''<html><head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head><body>'''
-common_tail = '''</body></html>'''
+common_tail = '''<br><a href='/'>Home</a></body></html>'''
 def roster_expected_goals(roster, nsim=1000):
     # add expected goals
     roster_goalsPG = dict()
@@ -168,13 +169,10 @@ def teams():
 
 @app.route('/current_player_info')
 def current_player_info():
-    return '''<html><head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head><body>
+    return common_head + '''
     {}<br>
-    Our cash: {}<br>
-    </body></html>
-    '''.format(get_info_on(current_player_id),bid_teams[our_id])
+    Our cash: {}
+    '''.format(get_info_on(current_player_id),bid_teams[our_id])+common_tail
 
 @app.route('/add_player/<player_id>')
 def add_player(player_id):
@@ -187,27 +185,17 @@ def add_player(player_id):
 
 @app.route('/set_player_form')
 def player_form():
-    return '''
-    <html>
-        <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head><body>
+    return common_head + '''
      <form action="/set_player">
       Player id:<br>
       <input type="text" name="id"><br>
       <input type="submit" value="Submit">
     </form>
-    </body>
-    </html>
-    '''
+    '''+common_tail
 
 @app.route('/sold_to_form')
 def sold_to_form():
-    return '''
-    <html>
-        <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head><body>
+    return common_head + '''
      <form action="/sold_to">
       Player id:<br>
       Sold to:<br>
@@ -216,9 +204,7 @@ def sold_to_form():
       <input type="text" name="sale_amount"><br>
       <input type="submit" value="Submit">
     </form>
-    </body>
-    </html>
-    '''
+    '''+common_tail
 
 @app.route('/sold_to')
 def sold_to():
@@ -236,7 +222,7 @@ def sold_to():
         Team number {} <br>
         or price {} <br>
         are invalid. Redirecting you back.
-        </body></html>'''.format(submitted_id,price)
+        '''.format(submitted_id,price)+common_tail
     global bid_teams
     bid_teams[submitted_id] = bid_teams[submitted_id] - price
     first = player_df.loc[current_player_id,'FirstName']
@@ -249,9 +235,7 @@ def sold_to():
         </head>
         <body>
         Recorded sale of {} from {} to team {} for {}
-        </body>
-        </html>
-        '''.format(first+' '+last, player_df.loc[current_player_id,'team'], submitted_id, price)
+        '''.format(first+' '+last, player_df.loc[current_player_id,'team'], submitted_id, price) + common_tail
 
 
 @app.route('/set_player')
@@ -268,7 +252,7 @@ def current_player():
         </head><body>
         You messed up. {} not a valid ID.<br>
         Redirecting you back to the submit page.<br>
-        </body></html>'''.format(submitted_id)
+        '''.format(submitted_id)+common_tail
     else:
         global current_player_id
         current_player_id = submitted_id
@@ -283,6 +267,4 @@ def current_player():
         <body>
         Set player id to {}, {} from {}.<br>
         Click <a href="/sold_to_form">here</a> if not redirected.
-        </body>
-        </html>
-        '''.format(current_player_id, first+' '+last, player_df.loc[current_player_id,'team'])
+        '''.format(current_player_id, first+' '+last, player_df.loc[current_player_id,'team'])+common_tail
