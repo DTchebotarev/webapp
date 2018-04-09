@@ -250,7 +250,7 @@ def sold_to():
         Recorded sale of {} from {} to team {} for {}
         </body>
         </html>
-        '''.format(first+' '+last, player_df.loc[player_id,'team'], submitted_id, price)
+        '''.format(first+' '+last, player_df.loc[current_player_id,'team'], submitted_id, price)
 
 
 @app.route('/set_player')
