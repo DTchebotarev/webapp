@@ -35,7 +35,7 @@ def prob_win(my_elo, your_elo):
 @lru_cache()
 def pwin_wrapper(team_1,team_2):
     return prob_win(elo_scores.loc[team_1,'Elo'],elo_scores.loc[team_2,'Elo'])
-bracket = ['NSH','COL','WPG','MIN','VGK','LAK','ANA','SJS',
+bracket = ['NSH','COL','WPJ','MIN','VGK','LAK','ANA','SJS',
            'TBL','NJD','BOS','TOR','WSH','CBJ','PIT','PHI']
 
 def random_draw(return_all = False):
