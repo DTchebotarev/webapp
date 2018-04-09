@@ -1,19 +1,148 @@
 from flask import Flask, request
 import pandas as pd
+from functools import lru_cache
 app = Flask(__name__)
 
-player_list = [5826, 5447, 5459, 4021, 4609, 4735, 5823, 4905, 4265, 4885]
+player_list = [ 9627,  4683,  5418,  4766,  5599,  4686,  5006, 10057,  8916,
+             5140,  5562,  5261,  4386,  4331,  4052]
 bid_teams = {k:1000 for k in range(19)}
 roster = set()
+elo_scores = pd.read_html('http://morehockeystats.com/teams/elo?inline=1&season=2017&page=1&hl=',index_col=0,header=0)[0]
+team_mapping = {'ANA':'Anaheim Ducks', 'ARI':'Arizona Coyotes', 'BOS':'Boston Bruins',
+'BUF':'Buffalo Sabres','CGY':'Calgary Flames', 'CAR':'Carolina Hurricanes',
+'CHI':'Chicago Blackhawks', 'COL':'Colorado Avalanche','CBJ':'Columbus Blue Jackets',
+'DAL':'Dallas Stars', 'DET':'Detroit Red Wings', 'EDM':'Edmonton Oilers', 'FLA':'Florida Panthers',
+'LAK':'Los Angeles Kings','MIN':'Minnesota Wild','MTL':'Montreal Canadiens','NSH':'Nashville Predators',
+'NJD':'New Jersey Devils','NYI':'New York Islanders','NYR':'New York Rangers','OTT':'Ottawa Senators',
+'PHI':'Philadelphia Flyers', 'PIT':'Pittsburgh Penguins','SJS':'San Jose Sharks',
+'STL':'St. Louis Blues','TBL':'Tampa Bay Lightning', 'TOR':'Toronto Maple Leafs', 'VAN':'Vancouver Canucks',
+'VGK':'Vegas Golden Knights', 'WSH':'Washington Capitals', 'WPG':'Winnipeg Jets'}
+reverse_team_mapping = {v: k for k, v in team_mapping.items()}
+elo_scores = elo_scores.replace({'ShortTeam':reverse_team_mapping})
+
+
+
+def prob_win(my_elo, your_elo):
+    return 1/(1+10**(-(my_elo-your_elo)/400))
+
+@lru_cache()
+def pwin_wrapper(team_1,team_2):
+    return prob_win(elo_scores.loc[team_1,'Elo'],elo_scores.loc[team_2,'Elo'])
+bracket = ['NSH','COL','WPG','MIN','VGK','LAK','ANA','SJS',
+           'TBL','NJD','BOS','TOR','WSH','CBJ','PIT','PHI']
+def random_draw(return_all = False):
+    # keep track of games played
+    gp = {k:0 for k in bracket}
+    # set up lists
+    round_2 = list()
+    round_3 = list()
+    finals = list()
+    winner = list()
+    # randomly play a bracket and determine next bracket
+    def play_bracket(play_bracket,next_bracket):
+        for i in range(len(play_bracket)):
+            if i % 2:
+                continue
+            team_1 = play_bracket[i]
+            team_2 = play_bracket[i+1]
+            team_1_wins = 0
+            team_2_wins = 0
+            team_1_prob = pwin_wrapper(team_1,team_2)
+            for i in range(7):
+                if team_1_wins < 4 and team_2_wins < 4:
+                    random_draw = random()
+                    if random_draw < team_1_prob:
+                        team_1_wins += 1
+                    else:
+                        team_2_wins += 1
+                    if team_1_wins == 4:
+                        next_bracket.append(team_1)
+                    elif team_2_wins == 4:
+                        next_bracket.append(team_2)
+            gp[team_1] = gp[team_1] + team_1_wins
+            gp[team_2] = gp[team_2] + team_2_wins
+    # round 1
+    play_bracket(bracket,round_2)
+    # round 2
+    play_bracket(round_2,round_3)
+    # semi final
+    play_bracket(round_3,finals)
+    # final
+    play_bracket(finals,winner)
+    if return_all:
+        return gp, bracket,round_2,round_3,finals,winner
+    else:
+        return gp
+
+
 
 current_player_id = 0
 
 player_df = pd.read_pickle('individual.pickle')
 
+common_head = '''<html><head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head><body>'''
+common_tail = '''</body></html>'''
+def roster_expected_goals(roster, nsim=1000):
+    # add expected goals
+    roster_goalsPG = dict()
+    roster_player_team = dict()
+    player_total = {k:0 for k in roster}
+    for player in roster:
+        roster_goalsPG[player] = player_df.loc[player,'PredictedPPG']
+        roster_player_team[player] = player_df.loc[player,'team']
+    # simulate brackets
+    for i in range(nsim):
+        gp = random_draw()
+        for player in roster:
+            player_total[player] = player_total[player] + gp[roster_player_team[player]] * roster_goalsPG[player]
+    return sum([v for v in player_total.values()])/nsim
+
+def get_player_margin(player_id):
+    value_without = roster_expected_goals(roster)
+    alternate_roster = roster.copy()
+    alternate_roster.add(player_id)
+    value_with = roster_expected_goals(alternate_roster)
+    return value_with - value_without
+
 def get_info_on(player_id):
     if player_id == 0:
         return "not initialized"
-    return player_df.loc[player_id,['FirstName','LastName']].to_frame().to_html()
+    else:
+        remaining_margin_points = sum([get_player_margin(p) for p in player_list])
+        remaining_cash = sum([k for k in bid_teams.values()])
+        try:
+            remaining_price = remaining_margin_points/remaining_cash
+        except:
+            remaining_price = 'No money left'
+        player_price = get_player_margin(player_id)
+        txt = common_head + '''
+        First Name: {} <br>
+        Last Name: {} <br>
+        Team: {} <br>
+        Expected PPG: {} <br>
+        Expected marginal points: {} <br>
+        Value per point: {} <br>
+        Player value at 100%: {} <br>
+        Player value at 90%: {} <br>
+        Player value at 80%: {} <br>
+        Player value at 70%: {} <br>
+        Player value at 60%: {} <br>
+        Player value at 50%: {} <br>
+        '''.format(player_df.loc[player_id,'FirstName'],
+        player_df.loc[player_id,'LastName'],
+        player_df.loc[player_id,'team'],
+        player_df.loc[player_id,'PredictedPPG'],
+        get_player_margin(player_id),
+        remaining_price,
+        player_price,
+        player_price*.9,
+        player_price*.8,
+        player_price*.7,
+        player_price*.6,
+        player_price*.5) + common_tail
+        return txt
 
 @app.route('/')
 def root():
