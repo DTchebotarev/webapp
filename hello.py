@@ -18,7 +18,7 @@ team_mapping = {'ANA':'Anaheim Ducks', 'ARI':'Arizona Coyotes', 'BOS':'Boston Br
 'NJD':'New Jersey Devils','NYI':'New York Islanders','NYR':'New York Rangers','OTT':'Ottawa Senators',
 'PHI':'Philadelphia Flyers', 'PIT':'Pittsburgh Penguins','SJS':'San Jose Sharks',
 'STL':'St. Louis Blues','TBL':'Tampa Bay Lightning', 'TOR':'Toronto Maple Leafs', 'VAN':'Vancouver Canucks',
-'VGK':'Vegas Golden Knights', 'WSH':'Washington Capitals', 'WPG':'Winnipeg Jets'}
+'VGK':'Vegas Golden Knights', 'WSH':'Washington Capitals', 'WPJ':'Winnipeg Jets'}
 reverse_team_mapping = {v: k for k, v in team_mapping.items()}
 elo_scores.loc[:,'ShortTeam'] = elo_scores.loc[:,'Team']
 elo_scores = elo_scores.replace({'ShortTeam':reverse_team_mapping})
@@ -85,8 +85,11 @@ current_player_id = 0
 
 player_df = pd.read_pickle('individual.pickle')
 player_list = list(player_df.index)
-common_head = '''<html><head>
+common_head = '''<!doctype html><html lang-"en"><head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </head><body>'''
 common_tail = '''<br><a href='/'>Home</a></body></html>'''
 def roster_expected_goals(roster, nsim=1000):
@@ -155,9 +158,7 @@ def get_info_on(player_id):
 
 @app.route('/')
 def root():
-    return '''<html><head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head><body>
+    return common_head.format('') + '''
     UUuugh. Web is hard.<br>
     Click for data entry mode: <a href="/set_player_form">here</a><br>
     Click for bidding mode: <a href="/current_player_info">here</a><br>
@@ -168,17 +169,17 @@ def root():
 
 @app.route('/teams')
 def teams():
-    return common_head + '<br>'.join(['Team {:02} ${}'.format(k,bid_teams[k]) for k in bid_teams.keys()]) + common_tail
+    return common_head.format('') + '<br>'.join(['Team {:02} ${}'.format(k,bid_teams[k]) for k in bid_teams.keys()]) + common_tail
 
 @app.route('/roster')
 def show_roster():
-    return common_head + '<br>'.join(['{} {} {}'.format(player_df.loc[p,'FirstName'],
+    return common_head.format('') + '<br>'.join(['{} {} {}'.format(player_df.loc[p,'FirstName'],
     player_df.loc[p,'LastName'],player_df.loc[p,'team']) for p in roster]) \
     + '<br>{} players left'.format(len(player_list)) + common_tail
 
 @app.route('/current_player_info')
 def current_player_info():
-    return common_head + '''
+    return common_head.format('') + '''
     {}<br>
     Our cash: {}
     '''.format(get_info_on(current_player_id),bid_teams[our_id])+common_tail
@@ -194,7 +195,7 @@ def current_player_info():
 
 @app.route('/set_player_form')
 def player_form():
-    return common_head + '''
+    return common_head.format('') + '''
      <form action="/set_player">
       Player id:<br>
       <input type="text" name="id"><br>
@@ -204,7 +205,7 @@ def player_form():
 
 @app.route('/sold_to_form')
 def sold_to_form():
-    return common_head + '''
+    return common_head.format('') + '''
      <form action="/sold_to">
       Player id:<br>
       Sold to:<br>
@@ -242,13 +243,7 @@ def sold_to():
     if submitted_id == our_id:
         global roster
         roster.add(current_player_id)
-    return '''
-        <html>
-        <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta HTTP-EQUIV="REFRESH" content="2; url=/set_player_form">
-        </head>
-        <body>
+    return common_head.format('<meta HTTP-EQUIV="REFRESH" content="2; url=/set_player_form">') + '''
         Recorded sale of {} from {} to team {} for {}
         '''.format(first+' '+last, player_df.loc[current_player_id,'team'], submitted_id, price) + common_tail
 
@@ -261,10 +256,7 @@ def current_player():
     except:
         submitted_id = '[not an integer: {}]'.format(submitted_id)
     if submitted_id not in player_df.index:
-        return '''<html><head>
-        <meta HTTP-EQUIV="REFRESH" content="2; url=/set_player_form">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head><body>
+        return common_head.format('<meta name="viewport" content="width=device-width, initial-scale=1.0">') + '''
         You messed up. {} not a valid ID.<br>
         Redirecting you back to the submit page.<br>
         '''.format(submitted_id)+common_tail
@@ -273,13 +265,7 @@ def current_player():
         current_player_id = submitted_id
         first = player_df.loc[current_player_id,'FirstName']
         last = player_df.loc[current_player_id,'LastName']
-        return '''
-        <html>
-        <head>
-        <meta HTTP-EQUIV="REFRESH" content="2; url=/sold_to_form">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body>
+        return common_head.format('<meta HTTP-EQUIV="REFRESH" content="2; url=/sold_to_form">') + '''
         Set player id to {}, {} from {}.<br>
         Click <a href="/sold_to_form">here</a> if not redirected.
         '''.format(current_player_id, first+' '+last, player_df.loc[current_player_id,'team'])+common_tail
