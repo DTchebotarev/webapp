@@ -105,7 +105,7 @@ def roster_expected_goals(roster, nsim=1000):
             player_total[player] = player_total[player] + gp[roster_player_team[player]] * roster_goalsPG[player]
     return sum([v for v in player_total.values()])/nsim
 
-def get_player_margin(player_id):
+def get_player_margin(player_id, nsim=1000):
     value_without = roster_expected_goals(roster)
     alternate_roster = roster.copy()
     alternate_roster.add(player_id)
@@ -116,7 +116,7 @@ def get_info_on(player_id):
     if player_id == 0:
         return "not initialized"
     else:
-        remaining_margin_points = sum([get_player_margin(p) for p in player_list])
+        remaining_margin_points = sum([get_player_margin(p,nsim=100) for p in player_list])
         remaining_cash = sum([k for k in bid_teams.values()])
         try:
             remaining_price = remaining_cash/remaining_margin_points
