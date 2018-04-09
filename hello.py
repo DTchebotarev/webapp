@@ -7,6 +7,7 @@ app = Flask(__name__)
 player_list = [ 9627,  4683,  5418,  4766,  5599,  4686,  5006, 10057,  8916,
              5140,  5562,  5261,  4386,  4331,  4052]
 bid_teams = {k:1000 for k in range(19)}
+our_id = 0
 roster = set()
 elo_scores = pd.read_html('http://morehockeystats.com/teams/elo?inline=1&season=2017&page=1&hl=',index_col=0,header=0)[0]
 team_mapping = {'ANA':'Anaheim Ducks', 'ARI':'Arizona Coyotes', 'BOS':'Boston Bruins',
@@ -164,18 +165,19 @@ def current_player_info():
     return '''<html><head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head><body>
-    {}
+    {}<br>
+    Our cash: {}<br>
     </body></html>
-    '''.format(get_info_on(current_player_id))
+    '''.format(get_info_on(current_player_id),bid_teams[our_id])
 
 @app.route('/add_player/<player_id>')
 def add_player(player_id):
     player_list.add(player_id)
     return "Ok"
 
-@app.route('/list_players')
-def list_players():
-    return "\n".join(player_list)
+# @app.route('/list_players')
+# def list_players():
+#     return "\n".join(player_list)
 
 @app.route('/set_player_form')
 def player_form():
@@ -205,7 +207,7 @@ def sold_to_form():
       Sold to:<br>
       <input type="text" name="buyer_team"><br>
       $ sold for:<br>
-      <input type="text" name="sale amount"><br>
+      <input type="text" name="sale_amount"><br>
       <input type="submit" value="Submit">
     </form>
     </body>
@@ -215,39 +217,35 @@ def sold_to_form():
 @app.route('/sold_to')
 def sold_to():
     submitted_id = request.args.get('buyer_team')
-
-    if submitted_id == 'us':
-        global our_cash
-        our_cash += -1*0
+    price = regquest.args.get('sale_amount')
     try:
         submitted_id = int(submitted_id)
+        price = int(price)
     except:
-        submitted_id = '[not an integer: {}]'.format(submitted_id)
-    if submitted_id not in player_df.index:
         return '''<html><head>
-        <meta HTTP-EQUIV="REFRESH" content="2; url=/set_player_form">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head><body>
-        You messed up. {} not a valid ID.<br>
-        Redirecting you back to the submit page.<br>
-        </body></html>'''.format(submitted_id)
-    else:
-        global current_player_id
-        current_player_id = submitted_id
-        first = player_df.loc[player_id,'FirstName']
-        last = player_df.loc[player_id,'LastName']
-        return '''
-        <html>
-        <head>
         <meta HTTP-EQUIV="REFRESH" content="2; url=/sold_to_form">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head><body>
+        You messed up <br>
+        Team number {} <br>
+        or price {} <br>
+        are invalid. Redirecting you back.
+        </body></html>'''.format(submitted_id,price)
+    global bid_teams
+    bid_teams[submitted_id] = bid_teams[submitted_id] - price
+    first = player_df.loc[current_player_id,'FirstName']
+    last = player_df.loc[current_player_id,'LastName']
+    return '''
+        <html>
+        <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta HTTP-EQUIV="REFRESH" content="2; url=/set_player_form">
         </head>
         <body>
-        Set player id to {}, {} from {}.<br>
-        Click <a href="/sold_to_form">here</a> if not redirected.
+        Recorded sale of {} from {} to team {} for {}
         </body>
         </html>
-        '''.format(current_player_id, first+' '+last, player_df.loc[player_id,'team'])
+        '''.format(first+' '+last, player_df.loc[player_id,'team'], submitted_id, price)
 
 
 @app.route('/set_player')
