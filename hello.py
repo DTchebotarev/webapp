@@ -130,6 +130,7 @@ def get_info_on(player_id):
         Team: {} <br>
         Expected PPG: {:.2f} <br>
         Expected marginal points: {:.2f} <br>
+        Expected games: {:.2f} <br>
         Value per point: {:.2f} <br>
         Player value at 100%: {:.2f} <br>
         Player value at 90%: {:.2f} <br>
@@ -141,7 +142,8 @@ def get_info_on(player_id):
         player_df.loc[player_id,'LastName'],
         player_df.loc[player_id,'team'],
         player_df.loc[player_id,'PredictedPPG'],
-        get_player_margin(player_id),
+        player_margin,
+        player_margin/player_df.loc[player_id,'PredictedPPG'],
         remaining_price,
         player_price,
         player_price*.9,
