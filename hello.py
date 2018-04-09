@@ -169,6 +169,10 @@ def root():
 def teams():
     return common_head + '<br>'.join(['Team {:02} ${}'.format(k,bid_teams[k]) for k in bid_teams.keys()]) + common_tail
 
+@app.route('/roster')
+def show_roster():
+    return common_head + '<br>'.join(['{} {} {}'.format(player_df.loc[p,'FirstName'],player_df.loc[p,'LastName'],player_df.loc[p,'team'] for p in roster) + common_tail
+
 @app.route('/current_player_info')
 def current_player_info():
     return common_head + '''
@@ -176,10 +180,10 @@ def current_player_info():
     Our cash: {}
     '''.format(get_info_on(current_player_id),bid_teams[our_id])+common_tail
 
-@app.route('/add_player/<player_id>')
-def add_player(player_id):
-    player_list.add(player_id)
-    return "Ok"
+# @app.route('/add_player/<player_id>')
+# def add_player(player_id):
+#     player_list.add(player_id)
+#     return "Ok"
 
 # @app.route('/list_players')
 # def list_players():
@@ -231,6 +235,9 @@ def sold_to():
     player_list.remove(current_player_id)
     first = player_df.loc[current_player_id,'FirstName']
     last = player_df.loc[current_player_id,'LastName']
+    if submitted_id == our_id:
+        global roster
+        roster.add(current_player_id)
     return '''
         <html>
         <head>
