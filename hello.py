@@ -96,6 +96,16 @@ common_head = '''<!doctype html><html lang="en"><head>
     </head><body>
     <div data-role="page">
     '''
+common_head_cpi = '''<!doctype html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,shrink-to-fit=no">
+    {}
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    </head><body>
+    <div data-role="page">
+    '''
 common_tail = '''<br><a href='/'>Home</a></div></body></html>'''
 def roster_expected_goals(roster, nsim=1000):
     # add expected goals
@@ -182,7 +192,7 @@ def show_roster():
 
 @app.route('/current_player_info')
 def current_player_info():
-    return common_head.format('') + '''
+    return common_head_cpi.format('') + '''
     {}<br>
     Our cash: {}
     '''.format(get_info_on(current_player_id),bid_teams[our_id])+common_tail
