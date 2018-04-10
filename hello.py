@@ -1,5 +1,5 @@
 from flask import Flask, request, Response
-from multiprocessing import Pool
+from multiprocessing import Pool, cpu_count
 from random import random
 import pandas as pd
 from functools import lru_cache
@@ -136,7 +136,7 @@ def get_info_on_abridged(player_id):
     if player_id == 0:
         return "not initialized"
     else:
-        with Pool(processes=3) as pool:
+        with Pool(processes=cpu_count()) as pool:
             remaining_margin_points = sum(pool.starmap(get_player_margin, [(p,1000) for p in player_list if p != current_player_id]))
         remaining_cash = sum([k for k in bid_teams.values()])
         try:
@@ -166,7 +166,7 @@ def get_info_on(player_id):
     if player_id == 0:
         return "not initialized"
     else:
-        with Pool(processes=3) as pool:
+        with Pool(processes=cpu_count()) as pool:
             remaining_margin_points = sum(pool.starmap(get_player_margin, [(p,1000) for p in player_list if p != current_player_id]))
         remaining_cash = sum([k for k in bid_teams.values()])
         try:
