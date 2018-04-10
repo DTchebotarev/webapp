@@ -97,9 +97,16 @@ common_head = '''<!doctype html><html lang="en"><head>
     <div data-role="page">
     '''
 redirect_js='''
-<script type="text/JavaScript">
-      setTimeout("location.href = '{}';",2500);
- </script>'''
+<script type="text/javascript">
+        var WAIT_IN_MILLISECONDS = 3000;
+        // define the function that will get called after the timeout
+        function redirectToPlace() {{
+            window.location = 'http://nhl.tchebotarev.com/{}';
+        }}
+        // schedule the function to get called after the timeout
+        setTimeout(redirectToPlace, WAIT_IN_MILLISECONDS);
+    </script>
+    '''
 common_tail = '''<br><a href='/'>Home</a></div></body></html>'''
 def roster_expected_goals(roster, nsim=1000):
     # add expected goals
