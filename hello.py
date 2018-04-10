@@ -101,6 +101,8 @@ common_head_cpi = '''<!doctype html><html lang="en"><head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0,shrink-to-fit=no">
     {}
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     </head><body>
     <div data-role="page">
     '''
@@ -140,7 +142,7 @@ def get_info_on(player_id):
             remaining_price = 'No money left'
         player_margin = get_player_margin(player_id)
         player_price = player_margin * remaining_price
-        txt = common_head.format('') + '''
+        txt =  '''
         First Name: {} <br>
         Last Name: {} <br>
         Team: {} <br>
