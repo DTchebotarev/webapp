@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, Response
 from multiprocessing import Pool
 from random import random
 import pandas as pd
@@ -9,7 +9,9 @@ app = Flask(__name__)
 player_df = pd.read_pickle('individual.pickle')
 player_list = list(player_df.index)
 
-bid_teams = {k:1000 for k in range(17)}
+bid_teams = {}
+bid_teams[0] = 1000
+bid_teams[1] = 1000*17-700
 our_id = 0
 roster = set()
 elo_scores = pd.read_html('http://morehockeystats.com/teams/elo?inline=1&season=2017&page=1&hl=',index_col=0,header=0)[0]
@@ -130,6 +132,36 @@ def get_player_margin(player_id, nsim=1000):
     value_with = roster_expected_goals(alternate_roster,nsim=nsim)
     return value_with - value_without
 
+def get_info_on_abridged(player_id):
+    if player_id == 0:
+        return "not initialized"
+    else:
+        with Pool(processes=3) as pool:
+            remaining_margin_points = sum(pool.starmap(get_player_margin, [(p,1000) for p in player_list if p != current_player_id]))
+        remaining_cash = sum([k for k in bid_teams.values()])
+        try:
+            remaining_price = remaining_cash/remaining_margin_points
+        except:
+            remaining_price = 'No money left'
+        player_margin = get_player_margin(player_id)
+        player_price = player_margin * remaining_price
+        txt =  '''
+        First Name: {} <br>
+        Last Name: {} <br>
+        Team: {} <br>
+        Expected PPG: {:.2f} <br>
+        Expected marginal points: {:.2f} <br>
+        Value per point: {:.2f} <br>
+        Player value at 100%: {:.2f} <br>
+        '''.format(player_df.loc[player_id,'FirstName'],
+        player_df.loc[player_id,'LastName'],
+        player_df.loc[player_id,'team'],
+        player_df.loc[player_id,'PredictedPPG'],
+        player_margin,
+        remaining_price,
+        player_price)
+        return txt
+
 def get_info_on(player_id):
     if player_id == 0:
         return "not initialized"
@@ -192,6 +224,17 @@ def show_roster():
     player_df.loc[p,'LastName'],player_df.loc[p,'team']) for p in roster]) \
     + '<br>{} players left'.format(len(player_list)) + common_tail
 
+@app.route('/all_player_info')
+def all_player_info():
+    def generate():
+        yield common_head.format('')
+        player_yield_list = list(player_df.sort_values('LastName').index)
+        for p in player_yield_list:
+            yield get_info_on_abridged(p)
+            yield '<br>'
+        yield common_tail
+    return Response(generate(), mimetype='text/html')
+
 @app.route('/current_player_info')
 def current_player_info():
     return common_head.format('') + '''
@@ -230,10 +273,15 @@ def player_form():
 @app.route('/sold_to_form')
 def sold_to_form():
     return common_head.format('') + '''
-     <form action="/sold_to">
       Player: {} {} - {}<br>
-      Sold to:<br>
-      <input type="text" name="buyer_team"><br>
+        <form action="/sold_to">
+            <fieldset data-role="controlgroup" data-type="horizontal">
+            <legend>Which team:</legend>
+            <input type="radio" name="buyer_team" id="not_us" value="1" checked="checked">
+            <label for="not_us">Not Us</label>
+            <input type="radio" name="buyer_team" id="us" value="0">
+            <label for="us">Us</label>
+            </fieldset>
       $ sold for:<br>
       <input type="text" name="sale_amount"><br>
       <input type="submit" value="Submit">
