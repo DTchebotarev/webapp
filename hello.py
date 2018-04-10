@@ -225,17 +225,21 @@ def sold_to():
     try:
         submitted_id = int(submitted_id)
         price = int(price)
-        assert current_player_id in player_list
     except:
-        return '''<html><head>
-        <meta HTTP-EQUIV="REFRESH" content="2; url=/sold_to_form">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head><body>
+        return common_head.format('<meta HTTP-EQUIV="REFRESH" content="2; url=/sold_to_form">') + '''
         You messed up <br>
         Team number {} <br>
         or price {} <br>
         are invalid. Redirecting you back.
         '''.format(submitted_id,price)+common_tail
+    try:
+        assert current_player_id in player_list
+    except:
+        return common_head.format(('<meta HTTP-EQUIV="REFRESH" content="2; url=/set_player_form">') ) + '''
+        You messed up <br>
+        Player {} was already sold.
+        Redirecting you back to pick a new player.
+        ''' + common_tail
     global bid_teams
     bid_teams[submitted_id] = bid_teams[submitted_id] - price
 #     global player_list
