@@ -199,7 +199,7 @@ def current_player_info():
 def player_form():
     return common_head.format('') + '''
     <form class="ui-filterable" action="/set_player">
-    <input type="text" id="inset-autocomplete-input" data-type="search" placeholder="Don't fuck this up Nicholas">
+    <input type="text" id="inset-autocomplete-input" data-type="search" name="id" placeholder="Don't fuck this up Nicholas"><br>
     <input type="submit" value="Submit">
 </form>
 <ul data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true" data-input="#inset-autocomplete-input">
@@ -208,23 +208,6 @@ def player_form():
     <li><a href="#">BMW</a></li>
     <li><a href="#">Cadillac</a></li>
     <li><a href="#">Chrysler</a></li>
-    <li><a href="#">Dodge</a></li>
-    <li><a href="#">Ferrari</a></li>
-    <li><a href="#">Ford</a></li>
-    <li><a href="#">GMC</a></li>
-    <li><a href="#">Honda</a></li>
-    <li><a href="#">Hyundai</a></li>
-    <li><a href="#">Infiniti</a></li>
-    <li><a href="#">Jeep</a></li>
-    <li><a href="#">Kia</a></li>
-    <li><a href="#">Lexus</a></li>
-    <li><a href="#">Mini</a></li>
-    <li><a href="#">Nissan</a></li>
-    <li><a href="#">Porsche</a></li>
-    <li><a href="#">Subaru</a></li>
-    <li><a href="#">Toyota</a></li>
-    <li><a href="#">Volkswagen</a></li>
-    <li><a href="#">Volvo</a></li>
 </ul>
     '''+common_tail
 
