@@ -298,7 +298,7 @@ def current_player():
         current_player_id = submitted_id
         first = player_df.loc[current_player_id,'FirstName']
         last = player_df.loc[current_player_id,'LastName']
-        return common_head.format('') + redirect_js.format('/sold_to_form')) + '''
+        return common_head.format('') + redirect_js.format('/sold_to_form') + '''
         Set player id to {}, {} from {}.<br>
         Click <a href="/sold_to_form">here</a> if not redirected.
         '''.format(current_player_id, first+' '+last, player_df.loc[current_player_id,'team'])+common_tail
