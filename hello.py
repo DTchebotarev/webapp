@@ -282,7 +282,7 @@ def current_player():
     except:
         submitted_id = '[not an integer: {}]'.format(submitted_id)
     if submitted_id not in player_df.index:
-        return common_head.format(redirect_js.format{'/set_player_form'}) + '''
+        return common_head.format(redirect_js.format('/set_player_form')) + '''
         You messed up. {} not a valid ID.<br>
         Redirecting you back to the submit page.<br>
         '''.format(submitted_id)+common_tail
