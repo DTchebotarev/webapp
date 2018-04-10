@@ -100,7 +100,7 @@ common_head = '''<!doctype html><html lang="en"><head>
     '''
 redirect_js='''
 <script type="text/javascript">
-        var WAIT_IN_MILLISECONDS = 3000;
+        var WAIT_IN_MILLISECONDS = 1000;
         // define the function that will get called after the timeout
         function redirectToPlace() {{
             window.location = 'http://nhl.tchebotarev.com{}';
@@ -179,6 +179,7 @@ def get_info_on(player_id):
         First Name: {} <br>
         Last Name: {} <br>
         Team: {} <br>
+        Injured: {} <br>
         Expected PPG: {:.2f} <br>
         Expected marginal points: {:.2f} <br>
         Value per point: {:.2f} <br>
@@ -191,6 +192,7 @@ def get_info_on(player_id):
         '''.format(player_df.loc[player_id,'FirstName'],
         player_df.loc[player_id,'LastName'],
         player_df.loc[player_id,'team'],
+        player_df.loc[player_id,'Injury'],
         player_df.loc[player_id,'PredictedPPG'],
         player_margin,
         remaining_price,
@@ -239,8 +241,8 @@ def all_player_info():
 def current_player_info():
     return common_head.format('') + '''
     {}<br>
-    Our cash: {}
-    '''.format(get_info_on(current_player_id),bid_teams[our_id])+common_tail
+    Our cash: {} <br>
+    '''.format(get_info_on(current_player_id),bid_teams[our_id]) + common_tail
 
 # @app.route('/add_player/<player_id>')
 # def add_player(player_id):
