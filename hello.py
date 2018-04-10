@@ -205,7 +205,7 @@ def get_info_on(player_id):
 @app.route('/')
 def root():
     return common_head.format('') + '''
-    UUuugh. Web is hard.<br>
+    Welcome to the DataTron Model 400.<br><br>
     Click for data entry mode: <a href="/set_player_form">here</a><br>
     Click for bidding mode: <a href="/current_player_info">here</a><br>
     Click for bidders overview: <a href="/teams">here</a><br>
