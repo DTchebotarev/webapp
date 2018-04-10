@@ -90,8 +90,8 @@ common_head = '''<!doctype html><html lang-"en"><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,shrink-to-fit=no">
     {}
-    </head><body>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    </head><body>
     '''
 common_tail = '''<br><a href='/'>Home</a></body></html>'''
 def roster_expected_goals(roster, nsim=1000):
