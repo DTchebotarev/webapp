@@ -209,7 +209,6 @@ def player_form():
     return common_head.format('') + '''
     <form class="ui-filterable" action="/set_player">
     <input type="text" id="inset-autocomplete-input" data-type="search" name="id" placeholder="Don't fuck this up Nicholas"><br>
-    <input type="submit" value="Submit">
 </form>
 <ul data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true" data-input="#inset-autocomplete-input">
 {}
