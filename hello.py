@@ -138,7 +138,6 @@ def get_info_on(player_id):
         Team: {} <br>
         Expected PPG: {:.2f} <br>
         Expected marginal points: {:.2f} <br>
-        Expected games: {:.2f} <br>
         Value per point: {:.2f} <br>
         Player value at 100%: {:.2f} <br>
         Player value at 90%: {:.2f} <br>
@@ -151,7 +150,6 @@ def get_info_on(player_id):
         player_df.loc[player_id,'team'],
         player_df.loc[player_id,'PredictedPPG'],
         player_margin,
-        player_margin/player_df.loc[player_id,'PredictedPPG'],
         remaining_price,
         player_price,
         player_price*.9,
@@ -198,6 +196,14 @@ def current_player_info():
 # def list_players():
 #     return "\n".join(player_list)
 
+def gen_plinks(id):
+    return '<li><a href="/set_player?id={}">{} {} - {}</a></li>'.format(
+    id,
+    player_df.loc[id,'FirstName'],
+    player_df.loc[id,'LastName'],
+    player_df.loc[id,'team']
+    )
+
 @app.route('/set_player_form')
 def player_form():
     return common_head.format('') + '''
@@ -206,13 +212,9 @@ def player_form():
     <input type="submit" value="Submit">
 </form>
 <ul data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true" data-input="#inset-autocomplete-input">
-    <li><a href="#">Acura</a></li>
-    <li><a href="#">Audi</a></li>
-    <li><a href="#">BMW</a></li>
-    <li><a href="#">Cadillac</a></li>
-    <li><a href="#">Chrysler</a></li>
+{}
 </ul>
-    '''+common_tail
+    '''.format(''.join([get_plinks(p) for p in player_list]))+common_tail
 
 @app.route('/sold_to_form')
 def sold_to_form():
