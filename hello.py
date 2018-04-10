@@ -90,7 +90,6 @@ common_head = '''<!doctype html><html lang-"en"><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,shrink-to-fit=no">
     {}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     </head><body>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     '''
@@ -199,11 +198,34 @@ def current_player_info():
 @app.route('/set_player_form')
 def player_form():
     return common_head.format('') + '''
-     <form action="/set_player">
-      Player id:<br>
-      <input type="text" name="id"><br>
-      <input type="submit" value="Submit">
-    </form>
+    <form class="ui-filterable" action="/set_player">
+    <input type="text" id="inset-autocomplete-input" data-type="search" placeholder="Don't fuck this up Nicholas">
+    <input type="submit" value="Submit">
+</form>
+<ul data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true" data-input="#inset-autocomplete-input">
+    <li><a href="#">Acura</a></li>
+    <li><a href="#">Audi</a></li>
+    <li><a href="#">BMW</a></li>
+    <li><a href="#">Cadillac</a></li>
+    <li><a href="#">Chrysler</a></li>
+    <li><a href="#">Dodge</a></li>
+    <li><a href="#">Ferrari</a></li>
+    <li><a href="#">Ford</a></li>
+    <li><a href="#">GMC</a></li>
+    <li><a href="#">Honda</a></li>
+    <li><a href="#">Hyundai</a></li>
+    <li><a href="#">Infiniti</a></li>
+    <li><a href="#">Jeep</a></li>
+    <li><a href="#">Kia</a></li>
+    <li><a href="#">Lexus</a></li>
+    <li><a href="#">Mini</a></li>
+    <li><a href="#">Nissan</a></li>
+    <li><a href="#">Porsche</a></li>
+    <li><a href="#">Subaru</a></li>
+    <li><a href="#">Toyota</a></li>
+    <li><a href="#">Volkswagen</a></li>
+    <li><a href="#">Volvo</a></li>
+</ul>
     '''+common_tail
 
 @app.route('/sold_to_form')
