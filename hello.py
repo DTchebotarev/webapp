@@ -177,6 +177,7 @@ def root():
     Click for bidding mode: <a href="/current_player_info">here</a><br>
     Click for bidders overview: <a href="/teams">here</a><br>
     Click here for roster: <a href="/roster">here</a><br>
+    </div>
     </body></html>
     '''
 
