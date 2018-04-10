@@ -214,7 +214,7 @@ def player_form():
 <ul data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true" data-input="#inset-autocomplete-input">
 {}
 </ul>
-    '''.format(''.join([get_plinks(p) for p in player_list]))+common_tail
+    '''.format(''.join([gen_plinks(p) for p in player_list]))+common_tail
 
 @app.route('/sold_to_form')
 def sold_to_form():
