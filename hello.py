@@ -252,7 +252,7 @@ def sold_to():
         submitted_id = int(submitted_id)
         price = int(price)
     except:
-        return common_head.format('<meta HTTP-EQUIV="REFRESH" content="2; url=/sold_to_form">') + '''
+        return common_head.format('<meta http-equiv="refresh" content="2; url=/sold_to_form">') + '''
         You messed up <br>
         Team number {} <br>
         or price {} <br>
@@ -261,7 +261,7 @@ def sold_to():
     try:
         assert current_player_id in player_list
     except:
-        return common_head.format(('<meta HTTP-EQUIV="REFRESH" content="2; url=/set_player_form">') ) + '''
+        return common_head.format(('<meta http-equiv="refresh" content="2; url=/set_player_form">') ) + '''
         You messed up <br>
         Player {} was already sold.
         Redirecting you back to pick a new player.
@@ -275,7 +275,7 @@ def sold_to():
     if submitted_id == our_id:
         global roster
         roster.add(current_player_id)
-    return common_head.format('<meta HTTP-EQUIV="REFRESH" content="2; url=/set_player_form">') + '''
+    return common_head.format('<meta http-equiv="refresh" content="2; url=/set_player_form">') + '''
         Recorded sale of {} from {} to team {} for {}
         '''.format(first+' '+last, player_df.loc[current_player_id,'team'], submitted_id, price) + common_tail
 
@@ -288,7 +288,7 @@ def current_player():
     except:
         submitted_id = '[not an integer: {}]'.format(submitted_id)
     if submitted_id not in player_df.index:
-        return common_head.format('<meta name="viewport" content="width=device-width, initial-scale=1.0">') + '''
+        return common_head.format('<meta http-equiv="refresh" content="2; url=/set_player_form">') + '''
         You messed up. {} not a valid ID.<br>
         Redirecting you back to the submit page.<br>
         '''.format(submitted_id)+common_tail
@@ -297,7 +297,7 @@ def current_player():
         current_player_id = submitted_id
         first = player_df.loc[current_player_id,'FirstName']
         last = player_df.loc[current_player_id,'LastName']
-        return common_head.format('<meta HTTP-EQUIV="REFRESH" content="2; url=/sold_to_form">') + '''
+        return common_head.format('<meta http-equiv="refresh" content="2; url=/sold_to_form">') + '''
         Set player id to {}, {} from {}.<br>
         Click <a href="/sold_to_form">here</a> if not redirected.
         '''.format(current_player_id, first+' '+last, player_df.loc[current_player_id,'team'])+common_tail
