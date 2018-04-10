@@ -93,8 +93,9 @@ common_head = '''<!doctype html><html lang-"en"><head>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     </head><body>
+    <div data-role="page">
     '''
-common_tail = '''<br><a href='/'>Home</a></body></html>'''
+common_tail = '''<br><a href='/'>Home</a></div></body></html>'''
 def roster_expected_goals(roster, nsim=1000):
     # add expected goals
     roster_goalsPG = dict()
