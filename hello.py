@@ -96,16 +96,10 @@ common_head = '''<!doctype html><html lang="en"><head>
     </head><body>
     <div data-role="page">
     '''
-common_head_cpi = '''<!doctype html><html lang="en"><head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,shrink-to-fit=no">
-    {}
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    </head><body>
-    <div data-role="page">
-    '''
+redirect_js='''
+<script type="text/JavaScript">
+      setTimeout("location.href = '{}';",2500);
+ </script>'''
 common_tail = '''<br><a href='/'>Home</a></div></body></html>'''
 def roster_expected_goals(roster, nsim=1000):
     # add expected goals
@@ -193,7 +187,7 @@ def show_roster():
 
 @app.route('/current_player_info')
 def current_player_info():
-    return common_head_cpi.format('') + '''
+    return common_head.format('') + '''
     {}<br>
     Our cash: {}
     '''.format(get_info_on(current_player_id),bid_teams[our_id])+common_tail
@@ -288,7 +282,7 @@ def current_player():
     except:
         submitted_id = '[not an integer: {}]'.format(submitted_id)
     if submitted_id not in player_df.index:
-        return common_head.format('<meta http-equiv="refresh" content="2; url=/set_player_form">') + '''
+        return common_head.format(redirect_) + '''
         You messed up. {} not a valid ID.<br>
         Redirecting you back to the submit page.<br>
         '''.format(submitted_id)+common_tail
@@ -297,7 +291,7 @@ def current_player():
         current_player_id = submitted_id
         first = player_df.loc[current_player_id,'FirstName']
         last = player_df.loc[current_player_id,'LastName']
-        return common_head.format('<meta http-equiv="refresh" content="2; url=/sold_to_form">') + '''
+        return common_head.format(redirect_js.format('/sold_to_form')) + '''
         Set player id to {}, {} from {}.<br>
         Click <a href="/sold_to_form">here</a> if not redirected.
         '''.format(current_player_id, first+' '+last, player_df.loc[current_player_id,'team'])+common_tail
