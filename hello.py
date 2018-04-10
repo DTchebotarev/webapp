@@ -219,14 +219,18 @@ def player_form():
 def sold_to_form():
     return common_head.format('') + '''
      <form action="/sold_to">
-      Player id:<br>
+      Player: {} {} - {}<br>
       Sold to:<br>
       <input type="text" name="buyer_team"><br>
       $ sold for:<br>
       <input type="text" name="sale_amount"><br>
       <input type="submit" value="Submit">
     </form>
-    '''+common_tail
+    '''.format(
+    player_df.loc[current_player_id,'FirstName'],
+    player_df.loc[current_player_id,'LastName'],
+    player_df.loc[current_player_id,'team']
+    )+common_tail
 
 @app.route('/sold_to')
 def sold_to():
